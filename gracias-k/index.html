@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>PapayaApp - Tu Salud Intestinal</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #FFD2B8 0%, #FFC1D1 100%);
+      min-height: 100vh;
+      padding: 40px 0; /* mostra degradê em cima e embaixo */
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto; /* centralizado horizontalmente */
+      background: #FFF7F0;
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+      padding-bottom: 20px;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #F78E3D 0%, #FFB347 100%);
+      padding: 26px 20px;
+      text-align: center;
+      color: #ffffff;
+    }
+
+    .header h1 {
+      font-size: 20px;
+      margin-bottom: 8px;
+      display: flex;
+      flex-direction: column; /* empilha no mobile */
+      align-items: center;
+      justify-content: center;
+      gap: 4px; /* reduz espaço entre emoji e texto */
+      text-align: center;
+    }
+
+    .header h1 span.icon {
+      font-size: 40px; /* maior e bem centralizado */
+      display: block;
+    }
+
+    .header p {
+      font-size: 13px;
+      opacity: 0.96;
+    }
+
+    .content {
+      padding: 26px 22px 24px 22px;
+    }
+
+    .intro {
+      text-align: center;
+      margin: 0 auto 22px auto;
+      color: #7b5a55;
+      max-width: 90%; /* centraliza melhor o texto */
+    }
+
+    .intro h2 {
+      width: 100%;
+      text-align: center;
+    }
+
+    .intro p {
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .quiz-section {
+      background: #FFF3EA;
+      border-radius: 18px;
+      padding: 20px 18px 20px 18px;
+      margin-bottom: 22px;
+      border: 2px solid #FFD7C2;
+    }
+
+    .quiz-section h3 {
+      color: #F78E3D;
+      margin-bottom: 6px;
+      font-size: 17px;
+      text-align: center;
+    }
+
+    .step-indicator {
+      text-align: center;
+      font-size: 11px;
+      color: #B27C6E;
+      margin-bottom: 14px;
+    }
+
+    .question-step {
+      margin-top: 6px;
+    }
+
+    .question {
+      margin-bottom: 14px;
+    }
+
+    .question label,
+    .question p {
+      display: block;
+      margin-bottom: 8px;
+      color: #7b5a55;
+      font-weight: 500;
+      font-size: 13px;
+    }
+
+    .question input[type="text"],
+    .question select {
+      width: 100%;
+      padding: 11px 12px;
+      border: 2px solid #FFD7C2;
+      border-radius: 12px;
+      font-size: 13px;
+      background: #FFF7F0;
+      color: #7b5a55;
+      transition: border-color 0.3s;
+    }
+
+    .question input[type="text"]:focus,
+    .question select:focus {
+      outline: none;
+      border-color: #F89A7A;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      padding: 11px 12px;
+      background: #FFF7F0;
+      border: 2px solid #FFD7C2;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.25s;
+      font-size: 13px;
+    }
+
+    .radio-option:hover {
+      border-color: #F89A7A;
+      background: #FFF3EA;
+    }
+
+    .radio-option input[type="radio"] {
+      margin-right: 10px;
+      accent-color: #F78E3D;
+    }
+
+    .next-btn,
+    .submit-btn {
+      width: 100%;
+      padding: 13px 14px;
+      background: linear-gradient(135deg, #F78E3D 0%, #FFB347 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s;
+      box-shadow: 0 4px 18px rgba(214, 115, 49, 0.45);
+    }
+
+    .next-btn:hover,
+    .submit-btn:hover {
+      transform: translateY(-1.5px);
+      box-shadow: 0 6px 22px rgba(214, 115, 49, 0.55);
+    }
+
+    .instructions {
+      background: #FFF4E8;
+      border-left: 4px solid #F9A66C;
+      padding: 18px 18px 20px 18px;
+      border-radius: 16px;
+      margin-top: 10px;
+    }
+
+    .instructions h4 {
+      color: #F78E3D;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .instructions ol {
+      margin-left: 18px;
+      color: #7b5a55;
+      font-size: 13px;
+    }
+
+    .instructions li {
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .platform-specific {
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid #FFD7C2;
+    }
+
+    .platform-title {
+      font-weight: 600;
+      color: #F07D5A;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    .small-text {
+      font-size: 12px;
+      color: #7b5a55;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .result-message {
+      text-align: center;
+      padding: 14px 12px;
+      background: #FFEFE3;
+      border-radius: 14px;
+      margin-bottom: 14px;
+    }
+
+    .result-message h3 {
+      color: #C75B39;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    .result-message p {
+      font-size: 12px;
+      color: #9A3F26;
+    }
+
+    .how-access {
+      margin-top: 18px;
+      padding-top: 12px;
+      border-top: 1px solid #F5D9C9;
+    }
+
+    .how-access h2 {
+      font-size: 14px;
+      color: #F07D5A;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .how-access ol {
+      margin-left: 18px;
+      font-size: 12px;
+      color: #7b5a55;
+    }
+
+    .footer-text {
+      border-top: 1px solid #F5D9C9;
+      margin-top: 14px;
+      padding-top: 10px;
+      font-size: 11px;
+      color: #99746E;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .support-fab {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: rgba(255, 247, 240, 0.95);
+      border-radius: 999px;
+      border: 1px solid #F78E3D;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+      color: #F07D5A;
+      font-size: 11px;
+      font-weight: 500;
+      text-decoration: none;
+      backdrop-filter: blur(6px);
+      z-index: 999;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+
+    .support-fab:hover {
+      background: #FFF3EA;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .support-icon-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #F78E3D 0%, #FFB347 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .support-label-full {
+      display: none;
+    }
+
+    .support-label-short {
+      display: inline;
+    }
+
+    @media (min-width: 480px) {
+      .header h1 {
+        font-size: 22px;
+      }
+
+      .header p {
+        font-size: 14px;
+      }
+
+      .intro h2 {
+        font-size: 19px;
+      }
+
+      .support-label-full {
+        display: inline;
+      }
+
+      .support-label-short {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 24px 0;
+      }
+
+      .container {
+        margin: 0 12px;
+        border-radius: 18px;
+      }
+
+      .support-fab {
+        right: 12px;
+        bottom: 12px;
+        transform: scale(0.95);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1><span class="icon">🧡</span><span>¡Tu acceso al PapayaApp fue liberado!</span></h1>
+      <p>Recetas personalizadas para tu salud intestinal y tu bienestar femenino.</p>
+    </div>
+
+    <div class="content">
+      <div class="intro">
+        <h2>✨ Personaliza tu experiencia</h2>
+        <p>Responde algunas preguntas rápidas para crear tu protocolo del PapayaApp según tu cuerpo, tu rutina
+          y el nivel de estreñimiento que tienes hoy.</p>
+      </div>
+
+      <!-- QUIZ -->
+      <div id="quizSection" class="quiz-section">
+        <h3>📋 Cuéntanos sobre ti</h3>
+        <p id="stepIndicator" class="step-indicator">Paso 1 de 10</p>
+
+        <form id="quizForm">
+          <!-- Paso 1: nombre -->
+          <div class="question-step" data-step="1">
+            <div class="question">
+              <label for="name">¿Cuál es tu nombre?</label>
+              <input type="text" id="name" name="name" placeholder="Tu nombre" />
+            </div>
+            <button type="button" class="next-btn">Continuar ➜</button>
+          </div>
+
+          <!-- Paso 2: edad -->
+          <div class="question-step hidden" data-step="2">
+            <div class="question">
+              <label for="age">¿Qué edad tienes aproximadamente?</label>
+              <input type="text" id="age" name="age" placeholder="Ej: 34 años" />
+            </div>
+            <button type="button" class="next-btn">Continuar ➜</button>
+          </div>
+
+          <!-- Paso 3: peso -->
+          <div class="question-step hidden" data-step="3">
+            <div class="question">
+              <label for="weight">¿Cuál es tu peso aproximado?</label>
+              <input type="text" id="weight" name="weight" placeholder="Ej: 68 kg" />
+            </div>
+            <button type="button" class="next-btn">Continuar ➜</button>
+          </div>
+
+          <!-- Paso 4: altura -->
+          <div class="question-step hidden" data-step="4">
+            <div class="question">
+              <label for="height">¿Cuál es tu altura aproximada?</label>
+              <input type="text" id="height" name="height" placeholder="Ej: 1,62 m" />
+            </div>
+            <button type="button" class="next-btn">Continuar ➜</button>
+          </div>
+
+          <!-- Paso 5: objetivo -->
+          <div class="question-step hidden" data-step="5">
+            <div class="question">
+              <p>¿Cuál es tu principal objetivo con PapayaApp?</p>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="objetivo" value="digestión" />
+                  <span>Mejorar mi digestión</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="objetivo" value="regularidad" />
+                  <span>Regular mi tránsito intestinal</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="objetivo" value="peso" />
+                  <span>Control de peso saludable</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="objetivo" value="general" />
+                  <span>Salud intestinal general</span>
+                </label>
+              </div>
+            </div>
+            <button type="button" class="next-btn">Continuar ➜</button>
+          </div>
+
+          <!-- Paso 6: evacuación -->
+          <div class="question-step hidden" data-step="6">
+            <div class="question">
+              <p>¿Con qué frecuencia vas al baño (evacuación intestinal)?</p>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="evacuacion" value="diario" />
+                  <span>Todos los días</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="evacuacion" value="cada2a3" />
+                  <span>Cada 2–3 días</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="evacuacion" value="1semana" />
+                  <span>1 vez por semana</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="evacuacion" value="menos" />
+                  <span>Menos de 1 vez por semana</span>
+                </label>
+              </div>
+            </div>
+            <button type="button" class="next-btn">Continuar ➜</button>
+          </div>
+
+          <!-- Paso 7: hinchazón -->
+          <div class="question-step hidden" data-step="7">
+            <div class="question">
+              <p>¿Cómo sientes la hinchazón en tu abdomen la mayor parte del tiempo?</p>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="hinchazon" value="leve" />
+                  <span>Leve, casi no me molesta</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="hinchazon" value="moderada" />
+                  <span>Moderada, noto la barriga inflamada</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="hinchazon" value="fuerte" />
+                  <span>Fuerte, me incomoda en la ropa</span>
+                </label>
+              </div>
+            </div>
+            <button type="button" class="next-btn">Continuar ➜</button>
+          </div>
+
+          <!-- Paso 8: fibra -->
+          <div class="question-step hidden" data-step="8">
+            <div class="question">
+              <p>¿Con qué frecuencia consumes fibra (frutas, verduras, semillas, granos)?</p>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="fibra" value="diario" />
+                  <span>Diariamente</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="fibra" value="frecuente" />
+                  <span>Varias veces por semana</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="fibra" value="ocasional" />
+                  <span>Ocasionalmente</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="fibra" value="poco" />
+                  <span>Raramente</span>
+                </label>
+              </div>
+            </div>
+            <button type="button" class="next-btn">Continuar ➜</button>
+          </div>
+
+          <!-- Paso 9: horario -->
+          <div class="question-step hidden" data-step="9">
+            <div class="question">
+              <label for="horario">¿En qué momento prefieres usar las recetas del PapayaApp?</label>
+              <select id="horario" name="horario">
+                <option value="">Selecciona una opción</option>
+                <option value="mañana">En ayunas por la mañana</option>
+                <option value="desayuno">Con el desayuno</option>
+                <option value="tarde">Durante la tarde</option>
+                <option value="noche">Por la noche</option>
+                <option value="flexible">Horario flexible, depende del día</option>
+              </select>
+            </div>
+            <button type="button" class="next-btn">Continuar ➜</button>
+          </div>
+
+          <!-- Paso 10: restricción -->
+          <div class="question-step hidden" data-step="10">
+            <div class="question">
+              <p>¿Tienes alguna restricción alimentaria importante?</p>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="restriccion" value="ninguna" />
+                  <span>Ninguna</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="restriccion" value="lactosa" />
+                  <span>Intolerancia a la lactosa</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="restriccion" value="gluten" />
+                  <span>Intolerancia al gluten</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="restriccion" value="vegana" />
+                  <span>Dieta vegana / vegetariana</span>
+                </label>
+              </div>
+            </div>
+            <button type="submit" class="submit-btn">Generar mis recetas personalizadas 🌟</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- INSTRUCCIONES DESPUÉS DEL QUIZ -->
+      <div id="instructionsSection" class="instructions hidden">
+        <div class="result-message">
+          <h3>¡Perfecto, <span id="userName"></span>! 🎉</h3>
+          <p>Tus recetas personalizadas ya están listas dentro del PapayaApp.</p>
+        </div>
+
+        <h4>👉 Cómo acceder ahora:</h4>
+        <ol>
+          <li>Haz clic en el botón de abajo.</li>
+          <li>Usa el mismo e-mail que usaste en tu compra.</li>
+          <li>¡Listo! El PapayaApp se desbloqueará automáticamente.</li>
+        </ol>
+
+        <div class="platform-specific">
+          <h4>📱 Tip importante:</h4>
+          <p class="small-text" style="margin-bottom: 10px;">Para tener el PapayaApp siempre a mano, añádelo en la
+            pantalla inicial de tu celular:</p>
+
+          <div style="margin-bottom: 8px;">
+            <div class="platform-title">En Android (Google Chrome):</div>
+            <p class="small-text">abre el link → toca los 3 puntitos en la esquina superior → selecciona
+              "Añadir a pantalla de inicio".</p>
+          </div>
+
+          <div>
+            <div class="platform-title">En iPhone (Safari):</div>
+            <p class="small-text">abre el link → toca el ícono de compartir (cuadrado con flecha) → selecciona
+              "Añadir a pantalla de inicio".</p>
+          </div>
+        </div>
+
+        <button class="submit-btn" style="margin-top: 14px;" onclick="window.location.href='https://www.admin.husky-app.com/app/MTc2NDY5OTY0OTg0OQ=='">
+          ACCEDER AL PAPAYAAPP AHORA ✨
+        </button>
+
+        <p style="text-align: center; margin-top: 10px; color: #777; font-size: 11px;">
+          Así, el PapayaApp aparecerá como un aplicativo instalado en tu celular 📱✨
+        </p>
+      </div>
+
+      <!-- BLOQUE CÓMO ACCEDER (FIJO ABAJO DEL CONTENIDO) -->
+      <div class="how-access">
+        <h2><span>👉</span><span>Cómo acceder ahora</span></h2>
+        <ol>
+          <li>Completa el quiz rápido de arriba.</li>
+          <li>Haz clic en el botón para entrar al PapayaApp.</li>
+          <li>Usa el mismo correo electrónico de tu compra.</li>
+        </ol>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="footer-text">
+        ¿Tu acceso no aparece o tienes dudas? Escribe a nuestro soporte y te ayudamos a activar tu PapayaApp lo antes
+        posible.
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTÓN FLOTANTE DE SOPORTE -->
+  <a href="mailto:soporte@papayaapp.com" class="support-fab">
+    <div class="support-icon-circle">?</div>
+    <span class="support-label-full">Soporte PapayaApp</span>
+    <span class="support-label-short">Soporte</span>
+  </a>
+
+  <script>
+    const steps = document.querySelectorAll('.question-step');
+    const stepIndicator = document.getElementById('stepIndicator');
+    const totalSteps = steps.length; // 10
+    let currentStep = 0;
+
+    function showStep(index) {
+      steps.forEach((step, i) => {
+        if (i === index) {
+          step.classList.remove('hidden');
+        } else {
+          step.classList.add('hidden');
+        }
+      });
+      stepIndicator.textContent = `Paso ${index + 1} de ${totalSteps}`;
+    }
+
+    function validateStep(index) {
+      switch (index) {
+        case 0: {
+          const name = document.getElementById('name').value.trim();
+          if (!name) {
+            alert('Por favor, escribe tu nombre.');
+            return false;
+          }
+          return true;
+        }
+        case 1: {
+          const age = document.getElementById('age').value.trim();
+          if (!age) {
+            alert('Indica tu edad aproximada.');
+            return false;
+          }
+          return true;
+        }
+        case 2: {
+          const weight = document.getElementById('weight').value.trim();
+          if (!weight) {
+            alert('Cuéntanos tu peso aproximado.');
+            return false;
+          }
+          return true;
+        }
+        case 3: {
+          const height = document.getElementById('height').value.trim();
+          if (!height) {
+            alert('Cuéntanos tu altura aproximada.');
+            return false;
+          }
+          return true;
+        }
+        case 4: {
+          const objetivo = document.querySelector('input[name="objetivo"]:checked');
+          if (!objetivo) {
+            alert('Selecciona tu objetivo principal con PapayaApp.');
+            return false;
+          }
+          return true;
+        }
+        case 5: {
+          const evac = document.querySelector('input[name="evacuacion"]:checked');
+          if (!evac) {
+            alert('Indica la frecuencia de tus evacuaciones.');
+            return false;
+          }
+          return true;
+        }
+        case 6: {
+          const hincha = document.querySelector('input[name="hinchazon"]:checked');
+          if (!hincha) {
+            alert('Cuéntanos cómo sientes la hinchazón en tu abdomen.');
+            return false;
+          }
+          return true;
+        }
+        case 7: {
+          const fibra = document.querySelector('input[name="fibra"]:checked');
+          if (!fibra) {
+            alert('Selecciona tu consumo actual de fibra.');
+            return false;
+          }
+          return true;
+        }
+        case 8: {
+          const horario = document.getElementById('horario').value;
+          if (!horario) {
+            alert('Elige el mejor horario para usar las recetas del PapayaApp.');
+            return false;
+          }
+          return true;
+        }
+        default:
+          return true;
+      }
+    }
+
+    showStep(currentStep);
+
+    const nextButtons = document.querySelectorAll('.next-btn');
+    nextButtons.forEach((btn, index) => {
+      btn.addEventListener('click', () => {
+        if (!validateStep(currentStep)) return;
+        if (currentStep < totalSteps - 1) {
+          currentStep++;
+          showStep(currentStep);
+        }
+      });
+    });
+
+    const quizForm = document.getElementById('quizForm');
+    quizForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const restriccion = document.querySelector('input[name="restriccion"]:checked');
+      if (!restriccion) {
+        alert('Indica si tienes alguna restricción alimentaria.');
+        return;
+      }
+
+      const userNameInput = document.getElementById('name');
+      const userNameSpan = document.getElementById('userName');
+      const finalName = (userNameInput.value || '').trim() || 'bella';
+      userNameSpan.textContent = finalName;
+
+      document.getElementById('quizSection').classList.add('hidden');
+      const instructions = document.getElementById('instructionsSection');
+      instructions.classList.remove('hidden');
+
+      instructions.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  </script>
+</body>
+
+</html>
